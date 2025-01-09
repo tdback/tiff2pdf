@@ -31,7 +31,7 @@ images by 90 degrees and scale the resulting PDFs up to 11 x 17 sized sheets
 for printing.
 
 ```bash
-tiff2pdf -r 90 -x 892 -y 1191 -d ./drawings
+tiff2pdf -r 90 -x 792 -y 1224 -d ./drawings
 ```
 
 ## Requirements
