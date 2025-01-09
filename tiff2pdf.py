@@ -17,9 +17,12 @@ def generate_pdf(path, rotate, width, height):
     # Convert each "page" (frame) in the TIFF to an image format used by PDFs.
     img = Image.open(path)
     for n in range(img.n_frames):
-        img.seek(n)
-        img = img.rotate(rotate, expand=True) if rotate else img
-        images.append(img.convert("RGB"))
+        try:
+            img.seek(n)
+            img = img.rotate(rotate, expand=True) if rotate else img
+            images.append(img.convert("RGB"))
+        except EOFError:
+            break
 
     # Save - and optionally scale - the PDF.
     if images:
