@@ -26,8 +26,9 @@ def generate_pdf(path, rotate, width, height):
 
     # Save - and optionally scale - the PDF.
     if images:
-        ext = ".tiff" if path.endswith(".tiff") else ".tif"
-        pdf_path = f"{path.rstrip(ext)}.pdf"
+        ext = "tiff" if path.lower().endswith("tiff") else "tif"
+        # Retain case sensitivity of filenames.
+        pdf_path = f"{path[:len(path.lower().rstrip(ext))]}pdf"
 
         images[0].save(
             pdf_path,
@@ -125,7 +126,7 @@ def main():
     if args.is_dir:
         for root, dirs, files in os.walk(args.path):
             for file in files:
-                if file.endswith(".tiff") or file.endswith(".tif"):
+                if file.lower().endswith(".tiff") or file.lower().endswith(".tif"):
                     path = f"{root}{os.sep}{file}"
                     generate_pdf(path, args.rotate, args.width, args.height)
     else:
