@@ -60,7 +60,7 @@
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
               (python3.withPackages (
-                p: with p; [
+                ps: with ps; [
                   ipython
                   pillow
                   pypdf2
