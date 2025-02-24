@@ -11,6 +11,10 @@ from PyPDF2 import PageObject, PdfReader, PdfWriter, Transformation
 from PyPDF2.generic import RectangleObject
 
 
+def is_tiff(path):
+    return any(path.lower().endswith(ext) for ext in [".tiff", ".tif"])
+
+
 def generate_pdf(path, rotate, width, height):
     images = []
 
@@ -112,7 +116,7 @@ def main():
 
     args = parser.parse_args()
 
-    if not args.width or not args.height:
+    if (args.width and not args.height) or (not args.width and args.height):
         print(
             "width and height require that both or neither be specified",
             file=sys.stderr,
@@ -126,10 +130,13 @@ def main():
     if args.is_dir:
         for root, dirs, files in os.walk(args.path):
             for file in files:
-                if file.lower().endswith(".tiff") or file.lower().endswith(".tif"):
+                if is_tiff(file):
                     path = f"{root}{os.sep}{file}"
                     generate_pdf(path, args.rotate, args.width, args.height)
     else:
+        if not is_tiff(args.path):
+            print(f"'{args.path}' is not a tiff.", file=sys.stderr)
+            exit(1)
         generate_pdf(args.path, args.rotate, args.width, args.height)
 
 
